@@ -9,27 +9,47 @@ output: ioslides_presentation
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-## Macrometer App
 
-Macronutrients are a focal point of dieting.   <https://whiskeyyankee.shinyapps.io/macros/>.
+## Executive summary
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document.
+Macronutrients are often a focal point of a healthy diet. In general, the concept is to determine how many calories to consume as Fat, Carbohydrates, and Protein. The proportions are often loosely based on a person's fitness goal or, in some cases, their body-type. These proportions are determined irregardless of a persons weight and Base Metabolic Rate leaving room for error wherein too little or too much protein are is consumed. Macrometer offers users the ability to look at more flexible macro ranges based on their weight and goals. Links to the app and the code used to generate it are provided below: 
 
-## Slide with Bullets
+- Macrometer App: <https://whiskeyyankee.shinyapps.io/macros/>
 
-- Bullet 1
-- Bullet 2
-- Bullet 3
+- R Code on Github: <https://github.com/WhiskeyYankee/Data-Products-3/tree/main/Macro>
 
-## Slide with R Output
+## Initial settings
 
-```{r cars, echo = TRUE}
-summary(cars)
+Macrometer is really straight forward. The first inputs in the side-panel are:
+
+- Unit Selection: User selects the units they prefer to enter their measurements in.
+
+- Output Type: User selects how they want to view their macro breakdown options. This can be swithched at anytime.
+
+## Measurements
+
+Once the Initial Settings have been selected, Users must click through Height, Weight, Age, Sex, and Goal tabs and enter their figures. Upon doing so, the app will present different macro balances based on min and max protein requirements. The minimum protein required for an individual is based on their age. Diets should not drop below this level. The higher protein options are based on typical athletic requirements. 
+
+
+
+## Advanced Settings
+The advanced setting tab allows users to select the formula used to calculate their Base Metabolic Rate (BMR)
+
+```{r echo=TRUE}
+# Sample Entries
+height <- round((5 * 12 + 11)*2.54,2); weight <- round(185*0.453592,2); Sex <- "M"; Age <- 30; Method <- "MSJ"; BodyFat <- 0.22
+# Calculate BMR
+BMR <- if (Method == "MSJ" & Sex == "M") 
+{round(10*weight + 6.25* height - 5*Age + 5,2)} else if 
+(Method == "MSJ" & Sex == "F")
+{round(10*weight + 6.25* height - 5*Age + -161,2)} else if 
+(Method == "RHB" & Sex == "M") 
+{round(13.397*weight + 4.799*height - 5.677*Age + 88.362,2)} else if
+(Method == "RHB" & Sex == "F") 
+{round(9.247*weight + 3.098*height - 4.330*Age + 447.593,2)} else 
+    {round(370 + 21.6*(1-BodyFat)*weight,2)}
+BMR
 ```
 
-## Slide with Plot
 
-```{r pressure}
-plot(pressure)
-```
 
